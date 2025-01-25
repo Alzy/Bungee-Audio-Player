@@ -28,3 +28,7 @@ cmake-build-debug
 cmake-build-release
 cmake-build-relwithdebinfo
 packaging/Output/*
+
+# includes and lib files
+include/bungee/*
+lib/bungee/Windows/Release/*
