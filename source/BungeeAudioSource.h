@@ -152,7 +152,13 @@ inline void BungeeAudioSource::processNextBlock() {
             const float* readPointer = outputChunk.data + channel * outputChunk.channelStride;
             memcpy(writePointer, readPointer, outputChunk.frameCount * sizeof(float));
         }
-        outputFifo->write(scratchBuffer, outputChunk.frameCount);
+
+        // Push to outputFifo content after negative (latency) region
+        if (outputChunk.request[Bungee::OutputChunk::begin]->position >= 0)
+        {
+            // we're pushing positions explicitly after negative region but a more robust solution <might> be necessary
+            outputFifo->write(scratchBuffer, outputChunk.frameCount);
+        }
 
         stretcher->next(request);
         Bungee::InputChunk inputChunk = stretcher->specifyGrain(request);
